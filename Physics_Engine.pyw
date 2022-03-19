@@ -358,25 +358,29 @@ class Scene:
 
             self.deltaTime = time.time() - self.timeOutFrame
             self.time += self.deltaTime
-            self.timeOutFrame = time.time()
-            if self.deltaTime!=0:
-                print(1/self.deltaTime)
 
-            # apply forces
-            a=Vect2(*pygame.mouse.get_pos())
-            for obj in self.movingObj:
-                # reset sum force
-                obj.sumForce = Vect2(0,0)
+            # if frameRate <= 400 fps (ie. 1/deltaTime <= 1/0.0025) ; do not exceed this frame rate, otherwise it could false calculations
+            if self.deltaTime==0 or self.deltaTime>=0.0025:
+                #if self.deltaTime!=0:
+                #    print(1/self.deltaTime)
+                self.timeOutFrame = time.time()
                 
-                obj.applyForce(Vect2(0,-9.81*obj.mass)) #gravity
-                #obj.applyForce(-obj.velocity*10) # air/ground friction when top view
+                # apply forces
+                a=Vect2(*pygame.mouse.get_pos())
+                for obj in self.movingObj:
+                    # reset sum force
+                    obj.sumForce = Vect2(0,0)
+                    
+                    obj.applyForce(Vect2(0,-9.81*obj.mass)) #gravity
+                    #obj.applyForce(-obj.velocity*10) # air/ground friction when top view
 
-                if pygame.mouse.get_pressed()[0]:
-                    # on mouse click throw the ball in the direction mouse to ball
-                    obj.applyForce((obj.pos-(self.view.toRealCoord(a)))*400)
-                obj.update()
+                    if pygame.mouse.get_pressed()[0]:
+                        # on mouse click throw the ball in the direction mouse to ball
+                        obj.applyForce((obj.pos-(self.view.toRealCoord(a)))*400)
+                    obj.update()
 
-            self.view.display()
+                self.view.display()
+            
             # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
