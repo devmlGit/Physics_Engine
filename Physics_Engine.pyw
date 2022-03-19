@@ -168,7 +168,6 @@ class PhysicsMoving:
         self.accel = self.sumForce/self.mass    # Newton's second law of motion
         self.velocity = self.Integral(self.velocity, self.accel)    # integrate to get velocity
         self.pos = self.Integral(self.pos, self.velocity)   #integrate to get position
-        #print(self.sumForce, self.accel, self.velocity)
         
     # integral from time
     def Integral(self, f, fDerivative):
@@ -388,19 +387,15 @@ class Scene:
 ##########################################################################
 
 
+# Add objects here ; forces and any frame dependant data are to be put in the scene's run function (which is called at each frame)
+a = Scene()
+x = a.addMovingObj(Ball(0.2,10, pos = Vect2(1,3)))
+x.velocity = Vect2(3,0)
 
-def main():
-    a = Scene()
-    x = a.addMovingObj(Ball(0.2,10, pos = Vect2(1,3)))
-    x.velocity = Vect2(3,0)
-
-    a.addStaticObj(Wall(Vect2(5,0.5), Vect2(0,0.5)))
-    a.addStaticObj(Wall(Vect2(0.5,5), Vect2(4.75,5)))
-    a.addStaticObj(Wall(Vect2(0.5,5), Vect2(-0.25,5)))
-    a.addStaticObj(Wall(Vect2(5,0.5), Vect2(0,5.25)))
-    a.addStaticObj(Wall(Vect2(1,0.5), Vect2(1,1)))
-    a.addStaticObj(RoundWall(1, Vect2(3,1.5)))
-    a.run()
-
-############################### MAIN ###############################
-main()
+a.addStaticObj(Wall(Vect2(5,0.5), Vect2(0,0.5)))
+a.addStaticObj(Wall(Vect2(0.5,5), Vect2(4.75,5)))
+a.addStaticObj(Wall(Vect2(0.5,5), Vect2(-0.25,5)))
+a.addStaticObj(Wall(Vect2(5,0.5), Vect2(0,5.25)))
+a.addStaticObj(Wall(Vect2(1,0.5), Vect2(1,1)))
+a.addStaticObj(RoundWall(1, Vect2(3,1.5)))
+a.run()
